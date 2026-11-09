@@ -1,0 +1,16 @@
+{
+  "name": "patto",
+  "owner": {
+    "name": "onEco GmbH",
+    "url": "https://pattorelay.com"
+  },
+  "metadata": {
+    "description": "Patto's plugin: outreach and campaign infrastructure for your AI, over Patto's remote MCP server."
+  },
+  "plugins": [
+    {
+      "name": "patto",
+      "source": "./plugins/claude"
+    }
+  ]
+}

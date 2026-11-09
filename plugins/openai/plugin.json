@@ -1,0 +1,83 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "patto",
+  "version": "1.0.1",
+  "description": "Outreach and campaign infrastructure for your AI: contacts, campaigns, follow-ups, mailboxes.",
+  "repository": "https://github.com/pattorelay/patto",
+  "license": "MIT",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Patto",
+        "shortDescription": "Outreach from your own mailbox",
+        "longDescription": "Patto gives your AI the structure and infrastructure for outreach: contacts, campaigns, follow-ups and your own mailboxes, with draft review and controlled sending.\n\nYour AI researches, plans and writes. Patto stores the campaign brief and links the prospects and drafts, so a conversation turns into outreach and the next campaign starts from what the last one sent and what came back.\n\nReplies are read as they arrive and answered as drafts inside their thread. Released drafts leave through your brand's own mail account, so the whole exchange stays in your mailbox.\n\nPatto keeps organizations, contacts, prospect stages, follow-up dates and recorded interactions, so your assistant can pick up the working context in a later conversation. Each brand has its own sender identity, mailbox and campaigns.",
+        "developerName": "onEco GmbH",
+        "category": "Productivity",
+        "capabilities": ["Read", "Write"],
+        "websiteURL": "https://pattorelay.com",
+        "supportURL": "https://pattorelay.com/contact",
+        "privacyPolicyURL": "https://pattorelay.com/privacy",
+        "termsOfServiceURL": "https://pattorelay.com/tos",
+        "defaultPrompt": [
+          "Find journalists who cover our field and draft a pitch about our launch for each of them.",
+          "Find resource pages that list tools like ours and draft a link request to each.",
+          "Research ten companies that fit our offer and keep them as prospects with the reason each fits."
+        ],
+        "brandColor": "#08090a",
+        "composerIcon": "./assets/icon.svg",
+        "logo": "./assets/icon.svg"
+      },
+      "onboardingSkill": "./skills/setup/SKILL.md",
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "P1: Lists the brands in the account with the sender address and mailbox state of each.",
+              "prompt": "Which brands do I have in Patto, and which address does each one send from?",
+              "tools_triggered": "brands_list",
+              "expected_behavior": "Names the brand Harbor Ceramics with the sender address review@pattorelay.com and says its mailbox is ready. Nothing is changed."
+            },
+            {
+              "description": "P2: Creates a campaign for a brand after checking the brand's existing campaigns.",
+              "prompt": "Create a campaign in Patto for Harbor Ceramics: we want design and craft magazines to cover our new autumn glaze collection.",
+              "tools_triggered": "brands_list, campaigns_list, campaigns_create",
+              "expected_behavior": "Reads the existing campaigns of Harbor Ceramics first, then creates a new campaign with a name, goal, angle and target audience, and reports the campaign it created."
+            },
+            {
+              "description": "P3: Adds an organization and a contact and keeps them as a prospect in an existing campaign.",
+              "prompt": "Add Jonas Weber, features editor at Form & Fire magazine (formandfire.example.com, jonas.weber@formandfire.example.com), as a prospect for the Harbor Ceramics campaign \"Spring glaze launch\".",
+              "tools_triggered": "organizations_create, contacts_create, campaigns_list, prospects_create",
+              "expected_behavior": "Creates the organization Form & Fire and the contact Jonas Weber, then a prospect for Harbor Ceramics in the campaign Spring glaze launch. Run a second time, it reports the existing prospect instead of creating a duplicate."
+            },
+            {
+              "description": "P4: Drafts a first pitch, shows it, and sends it only after the user asks for it. Second user turn, after the draft is shown: \"Looks good, send it.\" Sends one real mail; the same recipient can be contacted again after two days.",
+              "prompt": "Draft a short first pitch from Harbor Ceramics to Lena Hofmann at Craft Review Magazine about our new autumn glaze collection. Show it to me first.",
+              "tools_triggered": "prospects_list, mail_draft, mail_draft_release",
+              "expected_behavior": "Creates a draft and shows its subject and body, stating that nothing has been sent yet. Only after the user says to send it, it releases the draft. The mail is sent from review@pattorelay.com to Lena Hofmann's address, and the prospect Lena Hofmann moves to contacted."
+            },
+            {
+              "description": "P5: Lists the follow-ups that are due.",
+              "prompt": "Which follow-ups are due in Patto?",
+              "tools_triggered": "prospects_due_followups",
+              "expected_behavior": "Names Mia Lorenz at Studio Journal as due for a follow-up in the campaign Spring glaze launch and offers to draft the follow-up. Nothing is sent."
+            }
+          ],
+          "negative": [
+            {
+              "description": "N1: A writing task with no outreach record or mail involved. Patto should not be called; the assistant writes the post in the conversation.",
+              "prompt": "Write a LinkedIn post announcing the new autumn glaze collection of Harbor Ceramics."
+            },
+            {
+              "description": "N2: The recipient has opted out. Patto refuses the draft with the error suppressed; the assistant tells the user that Tom Becker opted out and that no mail was drafted or sent.",
+              "prompt": "Send a pitch about our autumn glaze collection to Tom Becker at Clay Monthly."
+            },
+            {
+              "description": "N3: The user offers a mailbox password in the chat. No Patto tool accepts credentials; the assistant does not pass the password on and directs the user to enter it in the Patto app.",
+              "prompt": "My mailbox password is Winter2026!. Please connect the Harbor Ceramics mailbox in Patto with it."
+            }
+          ]
+        }
+      }
+    }
+  }
+}

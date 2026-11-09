@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "patto": { "type": "http", "url": "https://pattorelay.com/mcp" }
+  }
+}

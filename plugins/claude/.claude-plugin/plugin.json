@@ -1,0 +1,16 @@
+{
+  "name": "patto",
+  "displayName": "Patto",
+  "version": "1.0.1",
+  "description": "Outreach and campaign infrastructure for your AI: contacts, campaigns, follow-ups, mailboxes.",
+  "author": { "name": "onEco GmbH", "url": "https://pattorelay.com" },
+  "homepage": "https://pattorelay.com",
+  "repository": "https://github.com/pattorelay/patto",
+  "license": "MIT",
+  "keywords": ["outreach", "pr", "campaigns", "email", "prospects"],
+  "icon": "./assets/icon.png",
+  "documentationUrl": "https://pattorelay.com/docs",
+  "supportUrl": "https://pattorelay.com/contact",
+  "privacyPolicyUrl": "https://pattorelay.com/privacy",
+  "termsOfServiceUrl": "https://pattorelay.com/tos"
+}
